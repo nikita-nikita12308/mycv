@@ -79,6 +79,24 @@ describe('AuthService', () => {
         const user = await service.signin('antonio@gmail.com', 'antonio921')
         expect(user).toBeDefined();
     })
+    it('throws an error if user signs up with email that is in use', async () => {
+        await service.signup('antonio@gmail.com', 'asd');
+        await expect(service.signup('antonio@gmail.com', 'asd')).rejects.toThrow(
+            BadRequestException
+        )
+    })
+    it('throws if signin is called with an unused email', async () => {
+        await expect(
+          service.signin('asdflkj@asdlfkj.com', 'passdflkj'),
+        ).rejects.toThrow(NotFoundException);
+      });
+     
+    it('throws if an invalid password is provided', async () => {
+        await service.signup('laskdjf@alskdfj.com', 'password');
+        await expect(
+          service.signin('laskdjf@alskdfj.com', 'laksdlfkj'),
+        ).rejects.toThrow(BadRequestException);
+    });
 
 })
 
