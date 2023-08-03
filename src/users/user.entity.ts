@@ -2,6 +2,8 @@ import { AfterInsert, AfterRemove, AfterUpdate, Entity, Column, PrimaryGenerated
 import { Exclude } from 'class-transformer';
 import { Report } from '../reports/report.entity';
 
+console.log(Report);
+
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
@@ -11,7 +13,6 @@ export class User {
     email: string;
 
     @Column()
-    @Exclude()
     password: string;
 
     @OneToMany(() => Report, (report) => report.user)
