@@ -7,13 +7,26 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     constructor( private configService: ConfigService) {}
 
     createTypeOrmOptions(): TypeOrmModuleOptions {
-        return {
-            type: 'sqlite',
-            synchronize: process.env.NODE_ENV === 'test' ? true : false,
-            database: this.configService.get<string>('DB_NAME'),
-            autoLoadEntities: true,
-            migrationsRun: process.env.NODE_ENV === 'test' ? true : false,
-            keepConnectionAlive: process.env.NODE_ENV === 'test' ? true : false,
+        if(process.env.MODE_ENV === 'production'){
+            return{
+                type: 'postgres',
+                synchronize: false,
+                url: process.env.DATABASE_URL,
+                autoLoadEntities: true,
+                migrationsRun: true,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            }
+        }else{
+            return {
+                type: 'sqlite',
+                synchronize: process.env.NODE_ENV === 'test' ? true : false,
+                database: this.configService.get<string>('DB_NAME'),
+                autoLoadEntities: true,
+                migrationsRun: process.env.NODE_ENV === 'test' ? true : false,
+                keepConnectionAlive: process.env.NODE_ENV === 'test' ? true : false,
+            }
         }
     }
 }
