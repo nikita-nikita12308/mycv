@@ -7,7 +7,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     constructor( private configService: ConfigService) {}
 
     createTypeOrmOptions(): TypeOrmModuleOptions {
-        if(process.env.MODE_ENV === 'production'){
+        if(process.env.NODE_ENV === 'production'){
             return{
                 type: 'postgres',
                 synchronize: false,
